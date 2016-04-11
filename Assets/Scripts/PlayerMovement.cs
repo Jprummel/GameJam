@@ -26,10 +26,18 @@ public class PlayerMovement : MonoBehaviour {
 
     public void Jump()
     {
-        if (_isGrounded)
+        if (_isGrounded == true)
         {
             _rb.AddForce(0, _jumpHeight, 0);
             _isGrounded = false;
+        }
+    }
+
+    void OnCollisionEnter(Collider other)
+    {
+        if (other.tag == "Ground")
+        {
+            _isGrounded = true;
         }
     }
 }
