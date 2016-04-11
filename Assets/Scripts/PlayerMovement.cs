@@ -2,28 +2,34 @@
 using System.Collections;
 
 public class PlayerMovement : MonoBehaviour {
-    [SerializeField]private float _maxSpeed;
-	[SerializeField]private float _speed;
-	                private Rigidbody rb;
+    [SerializeField]private float       _maxSpeed;
+	[SerializeField]private float       _speed;
+    [SerializeField]private float       _jumpHeight;
+                    private bool        _isGrounded;
+	                private Rigidbody   _rb;
 	// Use this for initialization
-	void Start () {
-		rb = GetComponent<Rigidbody>();
-	}
-	
-	// Update is called once per frame
-	void FixedUpdate () {
-		Movement ();
+	void Start () 
+    {
+		_rb = GetComponent<Rigidbody>();
 	}
 
-	void Movement()
+	public void Move(Vector3 vectorValue)
 	{
-        
-		float z = Input.GetAxis("Horizontal");
-        if (rb.velocity.magnitude > _maxSpeed)
+        if (_rb.velocity.magnitude > _maxSpeed)
         {
-            rb.velocity = rb.velocity.normalized * _maxSpeed;
+            _rb.velocity = _rb.velocity.normalized * _maxSpeed;
+            _speed = _maxSpeed;
         }
-		Vector3 position = new Vector3(0, 0, z);
-		rb.AddForce(position * _speed);
+
+        _rb.velocity = vectorValue * _speed;
 	}
+
+    public void Jump()
+    {
+        if (_isGrounded)
+        {
+            _rb.AddForce(0, _jumpHeight, 0);
+            _isGrounded = false;
+        }
+    }
 }
